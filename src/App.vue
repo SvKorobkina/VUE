@@ -1,26 +1,21 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="row-box" :class="'theme-' + theme"><!--Задаем класс theme для родительского блока row-box-->
+    <img src="./assets/logo.jpg" class="logo" alt="Amicum"> <!--Вставка логотипа -->
+    <div class="main">
+      <LeftPannel :theme="theme" @changeTheme="value => theme = value" />
+      <RightPannel :theme="theme" />
+    </div>
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+<script setup>
+//Импорт переменной ref
+import { ref } from 'vue' 
+//Импорт модулей
+import LeftPannel from './LeftPannel/LeftPannel.vue'
+import RightPannel from './RightPannel/RightPannel.vue'
+const theme = ref('dark') //Указываем, что ref по умолчанию - темная тема
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
+<style src="./global.css"></style> <!--Подключение css -->

@@ -1,0 +1,73 @@
+@property --p {
+  /*регистрация переменной*/
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.pie {
+  --p: 20; /*переменная для задания процентного соотношения*/
+  --b: 10px; /*Эта переменная определяет толщину границы*/
+  --w: 110px; /*Эта переменная определяет ширину диаграммы*/
+
+  width: var(--w);
+  aspect-ratio: 1; /*Позволяет сделать элемент статично квадратным*/
+  position: relative;
+  display: inline-grid;
+
+  place-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: sans-serif;
+  color: white;
+}
+.pie:before,
+.pie:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%; /*Превращает псевдоэлемент в круг*/
+}
+.pie:before {
+  /*Псевдоэлемент, покрывающий всю площадь благодаря inset: 0 */
+  inset: 0;
+  background: /*Скругления верхнего конца диаграммы*/ radial-gradient(
+        farthest-side,
+        var(--c) 98%,
+        #0000
+      )
+      top/var(--b) var(--b) no-repeat,
+    conic-gradient(var(--c) calc(var(--p) * 1%), #0000 0);
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    #0000 calc(99% - var(--b)),
+    #000 calc(100% - var(--b))
+  );
+  mask: radial-gradient(
+    farthest-side,
+    #0000 calc(99% - var(--b)),
+    #000 calc(100% - var(--b))
+  );
+}
+.pie:after {
+  /*--b это сокращенный вариант записи для top, right, bottom и left =>*/
+  inset: calc(
+    50% - var(--b) / 2
+  ); /*это значит, что с каждой стороны мы сдвигаемся к центру, за минусом отступа в b/2. Таким образом, получается ширина, равная 2*b/2 = b.*/
+  transform: rotate(calc(var(--p) * 3.6deg))
+    translateY(calc(50% - var(--w) / 2));
+}
+.animate {
+  /*вызов анимации*/
+  animation: p 1s 0.5s both; /*определние задержки*/
+}
+.no-round:before {
+  background-size: 0 0, auto;
+}
+.no-round:after {
+  content: none;
+}
+@keyframes p {
+  from {
+    --p: 0;
+  }
+}
